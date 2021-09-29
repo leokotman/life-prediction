@@ -31,7 +31,7 @@
     </div>
     <div>
       КВИЗ
-      <button>Позвонить и прослушать</button>
+      <button @click="getData">Позвонить и прослушать</button>
     </div>
     <footer>
       <img src="" alt="руны" />
@@ -49,6 +49,17 @@
 export default {
   name: "App",
   components: {},
+  methods: {
+    async getData() {
+      try {
+        let response = await fetch("https://swapi.dev/api/people/1/");
+        const people = await response.json();
+        console.log(people);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  }
 };
 </script>
 
