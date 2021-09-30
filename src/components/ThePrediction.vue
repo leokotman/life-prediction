@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div v-show="questions[currentQuestion]">
+    <div v-show="questions[currentQuestion] && !isLoading">
       <predict-header
         v-show="questions[currentQuestion].header"
         :header="questions[currentQuestion].header"
@@ -11,50 +11,52 @@
           <the-button :value="answer" @click.native="handleAnswerClick" />
         </li>
         <li v-else>
-          <form>
-            <div v-if="answer === 'День'">
-              <select name="day" id="" required>
-                <option value="День">День</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
-            </div>
-            <div v-else-if="answer === 'Месяц'">
-              <select name="month" id="" required>
-                <option value="Месяц">Месяц</option>
-                <option value="1">Январь</option>
-                <option value="2">Февраль</option>
-                <option value="3">Март</option>
-                <option value="4">Апрель</option>
-                <option value="5">Май</option>
-                <option value="6">Июнь</option>
-                <option value="7">Июль</option>
-                <option value="8">Август</option>
-                <option value="9">Сентябрь</option>
-                <option value="10">Октябрь</option>
-                <option value="11">Ноябрь</option>
-                <option value="12">Декабрь</option>
-              </select>
-            </div>
-            <div v-else>
-              <input
-                type="number"
-                min="1900"
-                max="2008"
-                name="year"
-                placeholder="Год"
-                required
-              />
-            </div>
-              <the-button :value="'Далее'" @click.native="handleAnswerClick" />
-          </form>
+          <div v-if="answer === 'День'">
+            <select name="day" id="" required>
+              <option value="День">День</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div v-else-if="answer === 'Месяц'">
+            <select name="month" id="" required>
+              <option value="Месяц">Месяц</option>
+              <option value="1">Январь</option>
+              <option value="2">Февраль</option>
+              <option value="3">Март</option>
+              <option value="4">Апрель</option>
+              <option value="5">Май</option>
+              <option value="6">Июнь</option>
+              <option value="7">Июль</option>
+              <option value="8">Август</option>
+              <option value="9">Сентябрь</option>
+              <option value="10">Октябрь</option>
+              <option value="11">Ноябрь</option>
+              <option value="12">Декабрь</option>
+            </select>
+          </div>
+          <div v-else>
+            <input
+              type="number"
+              min="1900"
+              max="2008"
+              name="year"
+              placeholder="Год"
+              required
+              :value="birthYear"
+            />
+          </div>
         </li>
       </ul>
-
+      <the-button
+        v-if="questions[currentQuestion].type === 'select'"
+        :value="'Далее'"
+        @click.native="calculateAge"
+      />
       <span>вопрос № {{ currentQuestion + 1 }} - 5</span>
     </div>
     <!-- компонент -->
-    <div v-if="isLoading">loading spinner</div>
+    <the-loading v-if="isLoading" />
     <!-- компонент -->
 
     <div v-if="isRecording">Запись сообщения</div>
@@ -64,17 +66,21 @@
 <script>
 import PredictHeader from "./PredictHeader.vue";
 import TheButton from "./TheButton.vue";
+import TheLoading from "./TheLoading.vue";
 
 export default {
   components: {
     PredictHeader,
     TheButton,
+    TheLoading,
   },
   data() {
     return {
       isLoading: false,
       isRecording: false,
+      birthYear: null,
       currentQuestion: 0,
+      clientAge: 0,
       questions: [
         {
           text: "Боитесь ли вы умереть?",
@@ -127,6 +133,14 @@ export default {
       } else {
         this.isRecording = true;
       }
+    },
+    calculateAge() {
+      this.isLoading = true;
+      this.clientAge = new Date().getFullYear() - this.birthYear;
+      setTimeout(() => {
+        this.isLoading = false;
+        this.handleAnswerClick();
+      }, 2500);
     },
   },
 };
