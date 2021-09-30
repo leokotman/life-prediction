@@ -23,27 +23,33 @@
           <span>когда Вы покинете этот Мир и при каких обстоятельствах?</span>
         </p>
 
-        <the-button :jumpTo="'the_prediction'" :value="'Да'"></the-button>
-        <the-button :jumpTo="'main'" :value="'Нет'"></the-button>
+        <the-button
+          @click.native="scrollPage('the_prediction')"
+          :value="'Да'"
+        ></the-button>
+        <the-button
+          @click.native="scrollPage('main')"
+          :value="'Нет'"
+        ></the-button>
         <h4>Онлайн предсказание</h4>
       </div>
     </header>
 
     <main id="main">
-      <div class="promo_card">
+      <section class="promo_card">
         <img src="./assets/img/hands.png" alt="hands" />
         <p>
           Позвольте нам раскрыть эту волнующую тайну и
           <span>с точностью определить дату и время вашей смерти,</span> а также
           предшествующую этому событию причину
         </p>
-      </div>
-      <div>
+      </section>
+      <section class="promo_txt">
         <p>
           Многие не верят предсказаниям и мы решили доказать каждому,
           <span>что прогноз может изменить жизнь любого человека!</span>
         </p>
-      </div>
+      </section>
       <div>
         <the-prediction id="the_prediction">
           <button @click="getData">Позвонить и прослушать</button>
@@ -87,6 +93,12 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    scrollPage(id) {
+      console.log("btn clicked to scroll");
+      let targetSection = document.getElementById(id);
+      targetSection.scrollIntoView({ behavior: "smooth" });
     },
   },
 };
@@ -202,5 +214,27 @@ body {
   font-weight: 500;
   font-size: 1.25rem;
   line-height: 156%;
+}
+
+#main .promo_txt {
+  background: linear-gradient(rgba(0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("./assets/img/image-7.jpeg") no-repeat;
+  background-position-y: center;
+  background-position-x: -28vw;
+  min-height: 330px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.promo_txt p {
+  font-size: 1rem;
+  line-height: 156%;
+  font-weight: 400;
+  max-width: 69%;
+}
+.promo_txt p > span {
+  font-size: 1.25rem;
+  color: rgb(246, 200, 102);
 }
 </style>

@@ -1,19 +1,13 @@
 <template>
   <div class="quest_btn">
-    <input type="button" :value="value" @click="scrollPage(jumpTo)" />
+    <input type="button" :value="value" />
     <div class="btn-shine"></div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["value", "jumpTo"],
-  methods: {
-    scrollPage(id) {
-      let targetSection = document.getElementById(id);
-      targetSection.scrollIntoView({ behavior: "smooth" });
-    },
-  }
+  props: ["value"],
 };
 </script>
 
