@@ -1,66 +1,58 @@
 <template>
   <section>
-    <div v-for="(question, idx) in questions" :key="question.text">
-      <predict-header :header="question.header" />
-      <p>{{ question.text }}</p>
-      <ul v-for="answer in question.answers" :key="answer">
-        <li v-if="question.type === 'button'">
-          <the-button :value="answer" />
+    <div v-show="questions[currentQuestion]">
+      <predict-header
+        v-show="questions[currentQuestion].header"
+        :header="questions[currentQuestion].header"
+      />
+      <p>{{ questions[currentQuestion].text }}</p>
+      <ul v-for="answer in questions[currentQuestion].answers" :key="answer">
+        <li v-if="questions[currentQuestion].type === 'button'">
+          <the-button :value="answer" @click.native="handleAnswerClick" />
         </li>
         <li v-else>
-          <div v-if="answer === 'День'">
-            <select name="day" id="">
-              <option value="День">День</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
-          </div>
-          <div v-else-if="answer === 'Месяц'">
-            <select name="month" id="">
-            <option value="Месяц">Месяц</option>
-            <option value="1">Январь</option>
-            <option value="2">Февраль</option>
-            <option value="3">Март</option>
-            <option value="4">Апрель</option>
-            <option value="5">Май</option>
-            <option value="6">Июнь</option>
-            <option value="7">Июль</option>
-            <option value="8">Август</option>
-            <option value="9">Сентябрь</option>
-            <option value="10">Октябрь</option>
-            <option value="11">Ноябрь</option>
-            <option value="12">Декабрь</option>
-          </select>
-          </div>
-          <div v-else>
-            <input
-            type="number"
-            min="1900"
-            max="2008"
-            name="year"
-            placeholder="Год"
-          />
-          <the-button :value="'Далее'" />
-          <!-- <select
-            name="year"
-            id=""
-            onfocus="this.size=5;"
-            onblur="this.size=1;"
-            onchange="this.size=1; this.blur();"
-          >
-            <option value="Год">Год</option>
-            <option value="1930">1930</option>
-            <option value="1931">1931</option>
-            <option value="1932">1932</option>
-            <option value="1933">1933</option>
-            <option value="1934">1934</option>
-          </select> -->
-          </div>
+          <form>
+            <div v-if="answer === 'День'">
+              <select name="day" id="" required>
+                <option value="День">День</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select>
+            </div>
+            <div v-else-if="answer === 'Месяц'">
+              <select name="month" id="" required>
+                <option value="Месяц">Месяц</option>
+                <option value="1">Январь</option>
+                <option value="2">Февраль</option>
+                <option value="3">Март</option>
+                <option value="4">Апрель</option>
+                <option value="5">Май</option>
+                <option value="6">Июнь</option>
+                <option value="7">Июль</option>
+                <option value="8">Август</option>
+                <option value="9">Сентябрь</option>
+                <option value="10">Октябрь</option>
+                <option value="11">Ноябрь</option>
+                <option value="12">Декабрь</option>
+              </select>
+            </div>
+            <div v-else>
+              <input
+                type="number"
+                min="1900"
+                max="2008"
+                name="year"
+                placeholder="Год"
+                required
+              />
+            </div>
+              <the-button :value="'Далее'" @click.native="handleAnswerClick" />
+          </form>
         </li>
       </ul>
-      <span>вопрос № {{ idx + 1 }} - 5</span>
-    </div>
 
+      <span>вопрос № {{ currentQuestion + 1 }} - 5</span>
+    </div>
     <!-- компонент -->
     <div v-if="isLoading">loading spinner</div>
     <!-- компонент -->
@@ -126,6 +118,16 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    handleAnswerClick() {
+      let nextQuestion = this.currentQuestion + 1;
+      if (nextQuestion < this.questions.length) {
+        this.currentQuestion = nextQuestion;
+      } else {
+        this.isRecording = true;
+      }
+    },
   },
 };
 </script>
