@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div v-show="questions[currentQuestion] && !isLoading">
+    <div v-if="currentQuestion <= 4 && !isLoading && !isRecording">
       <predict-header
         v-show="questions[currentQuestion].header"
         :header="questions[currentQuestion].header"
@@ -55,11 +55,11 @@
       />
       <span>вопрос № {{ currentQuestion + 1 }} - 5</span>
     </div>
-    <!-- компонент -->
-    <the-loading v-if="isLoading" />
-    <!-- компонент -->
 
-    <div v-if="isRecording">Запись сообщения</div>
+    <the-loading v-else-if="isLoading" />
+
+    <the-recording v-if="isRecording" @recorded="showFinalStage" />
+    <div v-if="resultsShown">РЕЗУЛЬТАТЫ</div>
   </section>
 </template>
 
@@ -67,17 +67,20 @@
 import PredictHeader from "./PredictHeader.vue";
 import TheButton from "./TheButton.vue";
 import TheLoading from "./TheLoading.vue";
+import TheRecording from "./TheRecording.vue";
 
 export default {
   components: {
     PredictHeader,
     TheButton,
     TheLoading,
+    TheRecording,
   },
   data() {
     return {
       isLoading: false,
       isRecording: false,
+      resultsShown: false,
       birthYear: null,
       currentQuestion: 0,
       clientAge: 0,
@@ -142,6 +145,11 @@ export default {
         this.handleAnswerClick();
       }, 2500);
     },
+    showFinalStage() {
+      this.currentQuestion++;
+      this.isRecording = false;
+      this.resultsShown = true;
+    }
   },
 };
 </script>
