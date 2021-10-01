@@ -27,7 +27,7 @@ export default {
           width++;
           this.barWidth = width + "%";
         }
-      }, 50);
+      }, 30);
     },
   },
   watch: {

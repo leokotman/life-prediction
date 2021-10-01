@@ -1,12 +1,16 @@
 <template>
   <section>
-    <div v-if="currentQuestion <= 4 && !isLoading && !isRecording">
+    <div
+      v-if="currentQuestion <= 4 && !isLoading && !isRecording"
+      class="prediction_div"
+    >
       <predict-header
         v-show="questions[currentQuestion].header"
         :header="questions[currentQuestion].header"
+        :styles="headerClass"
       />
-      <p>{{ questions[currentQuestion].text }}</p>
-      <ul v-for="answer in questions[currentQuestion].answers" :key="answer">
+      <p class="question">{{ questions[currentQuestion].text }}</p>
+      <div v-for="answer in questions[currentQuestion].answers" :key="answer">
         <li v-if="questions[currentQuestion].type === 'button'">
           <the-button :value="answer" @click.native="handleAnswerClick" />
         </li>
@@ -47,7 +51,7 @@
             />
           </div>
         </li>
-      </ul>
+      </div>
       <the-button
         v-if="questions[currentQuestion].type === 'select'"
         :value="'Далее'"
@@ -81,6 +85,7 @@ export default {
       isLoading: false,
       isRecording: false,
       resultsShown: false,
+      headerClass: "transparent",
       birthYear: null,
       currentQuestion: 0,
       clientAge: 0,
@@ -128,8 +133,12 @@ export default {
       ],
     };
   },
+  emits: ["hideFooter"],
   methods: {
     handleAnswerClick() {
+      if (this.currentQuestion === 0) {
+        this.$emit("hideFooter");
+      }
       let nextQuestion = this.currentQuestion + 1;
       if (nextQuestion < this.questions.length) {
         this.currentQuestion = nextQuestion;
@@ -149,12 +158,42 @@ export default {
       this.currentQuestion++;
       this.isRecording = false;
       this.resultsShown = true;
-    }
+    },
+  },
+  watch: {
+    currentQuestion() {
+      if (this.currentQuestion === 4) {
+        return (this.headerClass = "window");
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
+.prediction_div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.prediction_div span {
+  font-weight: 300;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  text-align: center;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.question {
+  font-size: 1rem;
+  line-height: 156%;
+  text-align: center;
+  text-transform: uppercase;
+  color: #f6c866;
+}
+
 select {
   width: 100px;
   height: 30px;
