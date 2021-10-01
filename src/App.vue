@@ -51,17 +51,19 @@
         </p>
       </section>
       <div>
-        <the-prediction id="the_prediction">
-          <button @click="getData">Позвонить и прослушать</button>
-        </the-prediction>
+        <the-prediction
+          id="the_prediction"
+          @hideFooter="footerHidden = true"
+        ></the-prediction>
       </div>
+      <button @click="getData">Позвонить и прослушать</button>
     </main>
 
-    <footer>
-      <div v-show="!footerHidden">
-        <img src="" alt="руны" />
-        <p>Вы, конечно, умрете. И все, с кем вы знакомы, тоже однажды умрут.</p>
-        <img src="" alt="руны" />
+    <footer v-show="!footerHidden">
+      <div >
+        <img src="./assets/img/rune1.svg" alt="руны" />
+        <p class="footer_statement">Вы, конечно, умрете. И все, с кем вы знакомы, тоже однажды умрут.</p>
+        <img src="./assets/img/rune2.svg" alt="руны" />
       </div>
       <p>
         TERMENI SI CONDITII: ACESTA ESTE UN SERVICIU DE DIVERTISMENT. PRIN
@@ -236,5 +238,13 @@ body {
 .promo_txt p > span {
   font-size: 1.25rem;
   color: rgb(246, 200, 102);
+}
+
+#the_prediction {
+  height: 568px;
+}
+
+.footer_statement {
+  font-family: "Bad Script";
 }
 </style>
