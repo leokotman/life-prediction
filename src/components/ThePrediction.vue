@@ -63,12 +63,17 @@
     <the-loading v-else-if="isLoading" />
 
     <the-recording v-if="isRecording" @recorded="showFinalStage" />
-    <div v-if="resultsShown">РЕЗУЛЬТАТЫ</div>
+    <predict-results
+      v-if="resultsShown"
+      @getData="getData"
+      :receivedData="receivedData"
+    />
   </section>
 </template>
 
 <script>
 import PredictHeader from "./PredictHeader.vue";
+import PredictResults from "./PredictResults.vue";
 import TheButton from "./TheButton.vue";
 import TheLoading from "./TheLoading.vue";
 import TheRecording from "./TheRecording.vue";
@@ -79,6 +84,7 @@ export default {
     TheButton,
     TheLoading,
     TheRecording,
+    PredictResults,
   },
   data() {
     return {
@@ -133,7 +139,8 @@ export default {
       ],
     };
   },
-  emits: ["hideFooter"],
+  props: ["receivedData"],
+  emits: ["hideFooter", "getData"],
   methods: {
     handleAnswerClick() {
       if (this.currentQuestion === 0) {
@@ -158,6 +165,10 @@ export default {
       this.currentQuestion++;
       this.isRecording = false;
       this.resultsShown = true;
+    },
+    getData() {
+      this.$emit("getData");
+      console.log('thePrediction emitted');
     },
   },
   watch: {

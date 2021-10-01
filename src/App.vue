@@ -54,15 +54,19 @@
         <the-prediction
           id="the_prediction"
           @hideFooter="footerHidden = true"
+          @getData="getData"
+          :receivedData="receivedData"
         ></the-prediction>
       </div>
-      <button @click="getData">Позвонить и прослушать</button>
+      
     </main>
 
     <footer v-show="!footerHidden">
-      <div >
+      <div>
         <img src="./assets/img/rune1.svg" alt="руны" />
-        <p class="footer_statement">Вы, конечно, умрете. И все, с кем вы знакомы, тоже однажды умрут.</p>
+        <p class="footer_statement">
+          Вы, конечно, умрете. И все, с кем вы знакомы, тоже однажды умрут.
+        </p>
         <img src="./assets/img/rune2.svg" alt="руны" />
       </div>
       <p>
@@ -83,6 +87,7 @@ export default {
   data() {
     return {
       footerHidden: false,
+      receivedData: {},
     };
   },
   methods: {
@@ -91,6 +96,7 @@ export default {
         let response = await fetch("https://swapi.dev/api/people/1/");
         const people = await response.json();
         console.log(people);
+        this.receivedData = people;
         this.footerHidden = true;
       } catch (error) {
         console.log(error);
