@@ -16,15 +16,15 @@
         </li>
         <li v-else>
           <div v-if="answer === 'День'">
-            <select name="day" id="" required>
-              <option value="День">День</option>
+            <select name="day" id="" v-model="birthDay">
+              <option value="День" disabled>День</option>
               <option value="1">1</option>
               <option value="2">2</option>
             </select>
           </div>
           <div v-else-if="answer === 'Месяц'">
-            <select name="month" id="" required>
-              <option value="Месяц">Месяц</option>
+            <select name="month" id="" v-model="birthMonth">
+              <option value="Месяц" disabled>Месяц</option>
               <option value="1">Январь</option>
               <option value="2">Февраль</option>
               <option value="3">Март</option>
@@ -46,8 +46,7 @@
               max="2008"
               name="year"
               placeholder="Год"
-              required
-              :value="birthYear"
+              v-model="birthYear"
             />
           </div>
         </li>
@@ -92,6 +91,8 @@ export default {
       isRecording: false,
       resultsShown: false,
       headerClass: "transparent",
+      birthDay: null,
+      birthMonth: null,
       birthYear: null,
       currentQuestion: 0,
       clientAge: 0,
@@ -137,39 +138,59 @@ export default {
           },
         },
       ],
+      clientAnswers: [],
     };
   },
   props: ["receivedData"],
   emits: ["hideFooter", "getData"],
   methods: {
-    handleAnswerClick() {
+    handleAnswerClick(e) {
+      let targetBtn = e.target.parentNode.querySelector("input");
       if (this.currentQuestion === 0) {
         this.$emit("hideFooter", true);
       }
       let nextQuestion = this.currentQuestion + 1;
+
+      console.log(targetBtn.value);
+      this.saveResults(targetBtn.value);
+
       if (nextQuestion < this.questions.length) {
         this.currentQuestion = nextQuestion;
       } else {
         this.isRecording = true;
       }
     },
-    calculateAge() {
-      this.isLoading = true;
-      this.clientAge = new Date().getFullYear() - this.birthYear;
-      setTimeout(() => {
-        this.isLoading = false;
-        this.handleAnswerClick();
-      }, 2500);
+    calculateAge(e) {
+      if (!this.birthDay || !this.birthMonth || !this.birthYear) {
+        alert("Заполните для продолжения, пожалуйста, все поля даты рождения");
+      } else {
+        this.isLoading = true;
+        this.clientAge = new Date().getFullYear() - this.birthYear;
+        this.saveResults({
+          birthDay: this.birthDay,
+          birthMonth: this.birthMonth,
+          birthYear: this.birthYear,
+        });
+
+        setTimeout(() => {
+          this.isLoading = false;
+          this.handleAnswerClick(e);
+        }, 2500);
+      }
+    },
+    saveResults(result) {
+      this.clientAnswers.push(result);
     },
     showFinalStage() {
       this.currentQuestion++;
       this.isRecording = false;
       this.resultsShown = true;
-      this.$emit('hideFooter', false);
+
+      this.$emit("hideFooter", false);
     },
     getData() {
       this.$emit("getData");
-      console.log('thePrediction emitted');
+      console.log("thePrediction emitted");
     },
   },
   watch: {
