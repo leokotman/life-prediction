@@ -1,17 +1,24 @@
 <template>
   <div class="quest_btn">
-    <input type="button" :value="value" />
+    <input type="button" :value="value" :class="btnColor" />
     <div class="btn-shine"></div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["value"],
+  props: ["value", "btnColor"],
 };
 </script>
 
 <style scoped>
+.green_btn {
+  background: linear-gradient(
+    90deg,
+    rgba(76, 217, 100, 0.9) -6.2%,
+    rgba(50, 185, 73, 0.9) 100%
+  );
+}
 input {
   background: linear-gradient(
     90deg,
