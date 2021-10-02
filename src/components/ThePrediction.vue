@@ -144,7 +144,7 @@ export default {
   methods: {
     handleAnswerClick() {
       if (this.currentQuestion === 0) {
-        this.$emit("hideFooter");
+        this.$emit("hideFooter", true);
       }
       let nextQuestion = this.currentQuestion + 1;
       if (nextQuestion < this.questions.length) {
@@ -165,6 +165,7 @@ export default {
       this.currentQuestion++;
       this.isRecording = false;
       this.resultsShown = true;
+      this.$emit('hideFooter', false);
     },
     getData() {
       this.$emit("getData");
@@ -195,6 +196,9 @@ export default {
   text-align: center;
   letter-spacing: 0.1em;
   color: rgba(255, 255, 255, 0.6);
+}
+.prediction_div li {
+  list-style-type: none;
 }
 
 .question {

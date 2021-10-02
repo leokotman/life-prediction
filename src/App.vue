@@ -53,12 +53,11 @@
       <div>
         <the-prediction
           id="the_prediction"
-          @hideFooter="footerHidden = true"
+          @hideFooter="toggleFooter"
           @getData="getData"
           :receivedData="receivedData"
         ></the-prediction>
       </div>
-      
     </main>
 
     <footer v-show="!footerHidden">
@@ -107,6 +106,13 @@ export default {
       console.log("btn clicked to scroll");
       let targetSection = document.getElementById(id);
       targetSection.scrollIntoView({ behavior: "smooth" });
+    },
+    toggleFooter(boolean) {
+      if (boolean === true) {
+        this.footerHidden = true;
+      } else {
+        this.footerHidden = false;
+      }
     },
   },
 };
