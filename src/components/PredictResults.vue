@@ -26,9 +26,9 @@
       :value="'Позвонить и прослушать'"
       :btnColor="'green_btn'"
     />
-    <ul>
+    <ul class="data_list">
       <li v-for="(data, idx) in receivedData" :key="data.idx">
-        {{ idx }} - {{ data }}
+        <span>{{ idx }} - </span> <span>{{ data }}</span> 
       </li>
     </ul>
   </section>
@@ -127,8 +127,15 @@ section {
   font-weight: 700;
   text-transform: uppercase;
 }
-li {
+.data_list {
+  max-width: 60%;
+}
+
+.data_list li {
   color: white;
   list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 </style>

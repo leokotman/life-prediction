@@ -233,8 +233,9 @@ body {
 #main .promo_txt {
   background: linear-gradient(rgba(0, 0, 0.2), rgba(0, 0, 0, 0.2)),
     url("./assets/img/image-7.jpeg") no-repeat;
-  background-position-y: center;
-  background-position-x: -28vw;
+  /* background-position-y: center;
+  background-position-x: -28vw; */
+  background-size: cover;
   min-height: 330px;
 
   display: flex;
@@ -253,7 +254,8 @@ body {
 }
 
 #the_prediction {
-  height: 568px;
+  min-height: 568px;
+  padding: 1.5rem 0 0;
 }
 
 .footer_statement {

@@ -35,6 +35,7 @@ input {
 }
 .quest_btn {
   width: 56%;
+  max-width: 395px;
   position: relative;
 }
 .btn-shine {
