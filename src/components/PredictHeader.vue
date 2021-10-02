@@ -18,14 +18,14 @@ div {
 p {
   max-width: 74%;
   margin: 0 auto 2.5rem;
-}
-.transparent {
   font-family: "Bad Script";
   font-style: normal;
   font-weight: normal;
   font-size: 0.875rem;
   line-height: 1.25rem;
   text-align: center;
+}
+.transparent {
   color: #fff;
   opacity: 0.6;
 }
@@ -36,6 +36,7 @@ p {
   border-radius: 5px;
   position: relative;
   color: #202024;
+  padding: .75rem;
 }
 .window:after,
 .window:before {

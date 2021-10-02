@@ -50,25 +50,25 @@
           <span>что прогноз может изменить жизнь любого человека!</span>
         </p>
       </section>
-      <div>
-        <the-prediction
-          id="the_prediction"
-          @hideFooter="toggleFooter"
-          @getData="getData"
-          :receivedData="receivedData"
-        ></the-prediction>
-      </div>
+      <the-prediction
+        id="the_prediction"
+        :class="predictionClass"
+        @hideFooter="toggleFooter"
+        @getData="getData"
+        :receivedData="receivedData"
+        @startedQuiz="styleForm"
+      ></the-prediction>
     </main>
 
     <footer v-show="!footerHidden">
       <div>
-        <img src="./assets/img/rune1.svg" alt="руны" />
-        <p class="footer_statement">
+        <img src="./assets/img/rune1.svg" alt="руны" class="footer-rune" />
+        <p class="footer-statement">
           Вы, конечно, умрете. И все, с кем вы знакомы, тоже однажды умрут.
         </p>
-        <img src="./assets/img/rune2.svg" alt="руны" />
+        <img src="./assets/img/rune2.svg" alt="руны" class="footer-rune" />
       </div>
-      <p>
+      <p class="footer-quote">
         TERMENI SI CONDITII: ACESTA ESTE UN SERVICIU DE DIVERTISMENT. PRIN
         FOLOSIREA LUI DECLARATI CA AVETI 18 ANI IMPLINITI,
       </p>
@@ -87,6 +87,7 @@ export default {
     return {
       footerHidden: false,
       receivedData: {},
+      predictionClass: "",
     };
   },
   methods: {
@@ -106,6 +107,9 @@ export default {
       console.log("btn clicked to scroll");
       let targetSection = document.getElementById(id);
       targetSection.scrollIntoView({ behavior: "smooth" });
+    },
+    styleForm() {
+      this.predictionClass = "prediction_block";
     },
     toggleFooter(boolean) {
       if (boolean === true) {
@@ -254,11 +258,33 @@ body {
 }
 
 #the_prediction {
-  min-height: 568px;
   padding: 1.5rem 0 0;
 }
+.prediction_block {
+  min-height: 568px;
+}
 
-.footer_statement {
+footer {
+  background: url("./assets/img/eye.svg") top right no-repeat,
+    url("./assets/img/moon.svg") bottom left no-repeat;
+}
+
+.footer-rune {
+  height: 0.625rem;
+}
+.footer-statement {
   font-family: "Bad Script";
+}
+.footer-quote {
+  margin: 0 auto;
+  height: 2rem;
+  max-width: 92%;
+  overflow-y: auto;
+  font-size: 0.43rem;
+  line-height: 0.56rem;
+  text-align: center;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #9d9d9d;
 }
 </style>

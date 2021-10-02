@@ -6,7 +6,7 @@
     >
       <predict-header
         v-show="questions[currentQuestion].header"
-        :header="questions[currentQuestion].header"
+        :header="currentHeader"
         :styles="headerClass"
       />
       <p class="question">{{ questions[currentQuestion].text }}</p>
@@ -91,6 +91,7 @@ export default {
       isRecording: false,
       resultsShown: false,
       headerClass: "transparent",
+      currentHeader: "",
       birthDay: null,
       birthMonth: null,
       birthYear: null,
@@ -142,7 +143,7 @@ export default {
     };
   },
   props: ["receivedData"],
-  emits: ["hideFooter", "getData"],
+  emits: ["hideFooter", "getData", "startedQuiz"],
   methods: {
     handleAnswerClick(e) {
       let targetBtn = e.target.parentNode.querySelector("input");
@@ -195,7 +196,22 @@ export default {
   },
   watch: {
     currentQuestion() {
-      if (this.currentQuestion === 4) {
+      if (this.currentQuestion > 0 && this.currentQuestion < 4) {
+        this.currentHeader = this.questions[this.currentQuestion].header;
+        this.$emit("startedQuiz");
+      } else if (this.currentQuestion === 4) {
+        if (this.clientAge >= 18 && this.clientAge <= 35) {
+          this.currentHeader =
+            this.questions[this.currentQuestion].header["18-35"];
+        } else if (this.clientAge > 35 && this.clientAge < 46) {
+          this.currentHeader =
+            this.questions[this.currentQuestion].header["36-45"];
+        } else if (this.clientAge > 45) {
+          this.currentHeader =
+            this.questions[this.currentQuestion].header["46+"];
+        } else {
+          this.currentHeader = "";
+        }
         return (this.headerClass = "window");
       }
     },
